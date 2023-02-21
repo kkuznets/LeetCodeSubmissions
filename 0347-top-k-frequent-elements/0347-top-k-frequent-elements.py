@@ -1,15 +1,17 @@
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        numbers = {}
-        frequentNumbers = []
-        for index, value in enumerate(nums):
-            if value in numbers:
-                numbers[value] += 1
-            else:
-                numbers[value] = 1
-        for i in range(k):
-            number = max(numbers, key=numbers.get)
-            frequentNumbers.append(number)
-            numbers.pop(number)
-        return frequentNumbers
+        count = {}
+        freq = [[] for i in range(len(nums) + 1)]
+
+        for n in nums:
+            count[n] = 1 + count.get(n, 0)
+        for n, c in count.items():
+            freq[c].append(n) # frequency as the index, number as the value
+
+        res = []
+        for i in range(len(freq) - 1, 0, -1):
+            for n in freq[i]:
+                res.append(n)
+                if len(res) == k:
+                    return res
 
